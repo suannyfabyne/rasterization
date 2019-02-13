@@ -100,9 +100,9 @@ Já a próxima, mostra pontos em diferentes octantes:
 
 Assim feita as retas, inicia-se a implementação da Interpolação de Cores, funcionando como um degradê. Nela, a cor de um vértice inicia-se de uma cor, e vai sendo alterada, suavemente, para a cor do próximo vértice. A função implementada calcula a diferença entre a cor do primeiro vértice com a do segundo vértice para cada componente RGBA, e é calculado, para cada delta, uma variação de cor a ser adicionada nas cores do pixel, de acordo com o seu andamento na reta. Essa variação é calculada pela divisão entre a diferença das cores e a distância entre os vértices. Dessa maneira, a cor do pixel atual a ser colorido é modificada e forma a suavização da reta.
 
-<br><br>
+<br>
 ![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/ultima.png)
-<br><br>
+
 
 ### DrawTriangle()
 

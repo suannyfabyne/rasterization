@@ -7,7 +7,7 @@
 
 
 
-### Uma breve introdução
+## Uma breve introdução
  
   <p>A atividade é baseada na realização de um algoritmo de rasterização de pontos e linhas, sendo necessário triângulos desenhados através de construção de arestas (linhas rasterizadas). As cores atribuidas a cada vértice formam um efeito suave ao longo da linha que conecta os mesmos através da técnica de interpolação, obtendo-se um efeito degradê caso os vértices (ou pontos extremos) tenham cores distintas. A rasterização é feita através da escrita direta na memória, utilizando um framework para simular o acesso à memória de vídeo.</p>
   
@@ -89,21 +89,85 @@ else if(abs(dy)>abs(dx) && dx!=0 && dy!=0){ //LIMITA O 2
 Usamos um outro objeto (paramPixel), que representa o ponto atual a ser rasterizado, e também uma funcão de Tratamento, para otimizarmos a mudança de alguns parâmetros necessários da função de rasterização do octante em questão. Variáveis como incr_e, incr_ne,d, etc, são variáveis que caracterizam o Algoritmo de Breseham e determinam o ponto a ser rasterizado.
 
 A imagem abaixo gerada a partir de vértices encontrados no primeiro octante:
-<br><br>
+<br>
 ![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/linha1.png)
 <br><br>
 
 Já a próxima, mostra pontos em diferentes octantes:
-<br><br>
+<br>
 ![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/octantes.png)
 <br><br>
 
 Assim feita as retas, inicia-se a implementação da Interpolação de Cores, funcionando como um degradê. Nela, a cor de um vértice inicia-se de uma cor, e vai sendo alterada, suavemente, para a cor do próximo vértice. A função implementada calcula a diferença entre a cor do primeiro vértice com a do segundo vértice para cada componente RGBA, e é calculado, para cada delta, uma variação de cor a ser adicionada nas cores do pixel, de acordo com o seu andamento na reta. Essa variação é calculada pela divisão entre a diferença das cores e a distância entre os vértices. Dessa maneira, a cor do pixel atual a ser colorido é modificada e forma a suavização da reta.
 
-<br>
 ![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/ultima.png)
-
+<br>
 
 ### DrawTriangle()
 
+Na função DrawTriangle usamos a estratégia de fazer apenas uma função que faz chamada de outra função (DrawLine) três vezes, como mostrado no exemplo abaixo:
 
+```c
+void DrawTriangle(Pixel Vertice_1, Pixel Vertice_2, Pixel Vertice_3){
+	DrawLine(Vertice_1, Vertice_2);
+	DrawLine(Vertice_2, Vertice_3);
+	DrawLine(Vertice_1, Vertice_3);
+}
+```
+
+Ele recebe três objetos do tipo Pixel que obtém as caracteristicas do vértice, onde chamando a função três vezes ela possui o objetivo de interligar os vértices formando um triângulo.
+<br><br>
+![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/trianguloperfeito.png)
+<br><br>
+Outro exemplo de triangulo obtido:
+<br>
+![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/triangulo2.png)
+<br><br>
+Como um extra, preenchemos o triângulo de formas diferentes, onde os vértices obtinham duas ou três cores distintas. Abaixo vermos o primeiro triângulo:
+<br><br>
+![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/bicolor.png)
+<br><br>
+E agora vemos o triângulo preenchido com vértices de cores diferentes:
+<br><br>
+![alt text](https://github.com/suannyfabyne/rasterization/blob/master/prints/tricolor.png)
+<br><br>
+
+Obtivemos o resultado a partir do seguinte código: 
+
+```c
+void MyGlDraw(void)
+{
+	Pixel Vertice_1(128, 406, 255, 0, 0, 255);
+	Pixel Vertice_2(256, 106, 0, 255, 0, 255);
+	Pixel Vertice_3(384, 406, 0, 0, 255, 255);
+	DrawTriangle(Vertice_1, Vertice_2, Vertice_3);
+
+	int j = 0;
+	for (int i = 128; i < 385; ++i) {
+		Pixel Vertice_1(i, 406, 255-j, 0, 0+j, 255);
+	 	Pixel Vertice_2(256, 106, 0, 255, 0, 255);
+	 	j++;
+		DrawLine(Vertice_1, Vertice_2);
+	}
+
+}
+```
+Após rasterizarmos o triângulo, preenchemos ele com retas através de uma estrutura de repetição, onde variamos apenas o ponto X do primeiro vértice e o componente R e B do mesmo. O X variou entre seus pontos mais extremos, que era o X do vértice 1, sendo 128, e o X do vértice 3, que é 384. Usamos o vértice 2 como ponto central, onde era o destino de todas as retas que preencheram o triângulo.
+
+## Considerações finais
+
+Os resultados obtidos foram gratificantes para a dupla, podendo adentrar mais na área de computação gráfica, entendendo como pontos e linhas são rasterizados e manipulados na memória. Dificuldades são sempre encontradas, mas as que mais se destacaram foram:
+<ul>
+	<li> Dificuldade de interpretar as posições na tela em relação a quadrantes;
+	<li> Adaptar o Algoritmo de Breseham apresentado em aula para que funcionasse em qualquer posição do plano;
+	<li> Entender o cálculo de Interpolação e aplicá-lo no código;
+	<li> Encontrar uma estratégia de preenchimento de triângulos.
+</ul>	
+Uma consideração a ser destacada é que ao preenchemos os triângulos com cor, foram detectados erros no algoritmo de Breseham que não foram encontrados antes. Dessa maneira, pudemos enchergar melhor o que estava acontecendo e corrigir os erros detectados. 
+Também houve pesquisas para entender melhor alguns aspectos e desenvolver o algorítmo com embaseamento teórico.
+
+## Referências
+
+https://izauraidom.wixsite.com/meusite <br>
+https://johannesca.github.io/cg_t1/ <br>
+http://letslearnbits.blogspot.com/2014/10/icgt1-interpolacao-de-cores.html

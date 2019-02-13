@@ -14,9 +14,9 @@
 Em resumo, há a implementação de 3 funções principais:
 
 <ol>
-  <li><b>PutPixel</b>: Rasteriza um ponto na memória de vídeo.</li>
-  <li><b>DrawLine</b>: Função que rasteriza uma linha na tela com interpolação linear das cores dos vértices.</li>
-  <li><b>DrawTriangle</b>: Desenha as arestas de um triângulo na tela</li>
+  <li><b>PutPixel</b>: Rasteriza um ponto na memória de vídeo;</li>
+  <li><b>DrawLine</b>: Função que rasteriza uma linha na tela com interpolação linear das cores dos vértices;</li>
+  <li><b>DrawTriangle</b>: Desenha as arestas de um triângulo na tela.</li>
 </ol>
 
 <br>

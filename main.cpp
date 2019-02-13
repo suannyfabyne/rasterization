@@ -16,6 +16,8 @@ void MyGlDraw(void)
 	 	j++;
 		DrawLine(Vertice_1, Vertice_2);
 	}
+
+	
 } 
 //-----------------------------------------------------------------------------
 int main(int argc, char **argv)
